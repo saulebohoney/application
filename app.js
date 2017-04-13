@@ -26,8 +26,8 @@ $(function(){
       units:userUnits
     }
     //switch statement to detect if user input was a number, if it was add .zip property, if not, add q property for city search. US = country code
-    switch (userInput){
-      case typeof userInput == 'number':
+    switch (typeof userInput){
+      case 'number':
         query.zip =`${userInput},US`
         break;
       default:
@@ -35,7 +35,9 @@ $(function(){
         break;
     }
     $.getJSON(endpointURL, query, callback);
-  }
+  } // get JSON works because it calls 'callback' which is passed into getData as showData(line 61).
+  //when showData is called as the callback on $.getJSON (line 37), showData is called with the object we got from the API set to (data) in the function.
+  //we can then manipulate the manipulate the object as 'data' in showData
   function showData(data){
     let title = data.city.name;
     let dataHTML = '';
