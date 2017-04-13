@@ -3,18 +3,36 @@ const endpointURL = "http://api.openweathermap.org/data/2.5/forecast/daily";
 
 
 $(function(){
-  let today = new Date();
-  let dd = today.getDate();
-  let mm = today.getMonth()+1;
-  function getData(userInput, userCnt, userUnits, callback){
+  const today = new Date();
+  const dd = today.getDate();
+  const mm = today.getMonth()+1;
+  let userUnitSelection = '';
+
+  function getData(userInput, userCnt, callback){
+    let userUnits=$('#unitSelector').val();
+    if (userUnits == 'imperial'){
+      userUnitSelection = ' F';
+    } else if (userUnits =='metric'){
+      userUnitSelection = ' C';
+    } else{
+      userUnitSelection = ' K';
+    }
+
     const query={
-      zip: `${userInput},US`,
+      // zip: `${userInput},US`,
       apikey:apikey,
       cnt:userCnt,
       mode:'json',
       units:userUnits
     }
-
+    switch (userInput){
+      case typeof userInput == 'number':
+        query.zip =`${userInput},US`
+        break;
+      default:
+        query.q=`${userInput},US`
+        break;
+    }
     $.getJSON(endpointURL, query, callback);
   }
   function showData(data){
@@ -22,9 +40,8 @@ $(function(){
     let dataHTML = ``;
     console.log(data);
     let currentDate=dd;
-
     data.list.map(function(obj){
-      dataHTML += '<h1>'+mm+'/'+currentDate+'</h1><ul><li>'+'Day time temperature: ' +obj.temp.day+'</li><br><li>'+obj.weather[0].main+'</li></ul>';
+      dataHTML += '<h1>'+mm+'/'+currentDate+'</h1><ul><li>'+'Day time temperature: ' +obj.temp.day+userUnitSelection+'</li><br><li>'+obj.weather[0].main+'</li></ul>';
       currentDate++;
     })
     $('.js-titleContainer').append(`<h1>${title}</h1>`)
@@ -38,12 +55,20 @@ $(function(){
     event.preventDefault();
     let userInput = $('#search-box').val();
     let userCnt = $('#cntSelector').val();
-    let userUnits=$('#unitSelector').val();
-    getData(userInput, userCnt, userUnits, showData);
+
+    getData(userInput, userCnt, showData);
     console.log(today);
   })
 
-//Render function
+  // if (userUnits == 'imperial'){
+  //   let userUnitSelection = ' F';
+  // } else if (userUnits =='metric'){
+  //   let userUnitSelection = ' C';
+  // } else{
+  //   let userUnitSelection = ' K';
+  // }
+
+
 // getData(showData);
 })
 //object.list[0] = today
