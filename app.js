@@ -1,15 +1,16 @@
 const apikey = 'a7afa68d4dc2512e1d7bcdf7a20c5a73';
 const endpointURL = "http://api.openweathermap.org/data/2.5/forecast/daily";
 
-
+//$(document).ready(function)
 $(function(){
+  //getting our date, setting an empty string for global scope on userUnitSelection
   const today = new Date();
   const dd = today.getDate();
   const mm = today.getMonth()+1;
   let userUnitSelection = '';
-
-  function getData(userInput, userCnt, callback){
-    let userUnits=$('#unitSelector').val();
+//GetData is querry function
+  function getData(userInput, userCnt, userUnits, callback){
+    //check what units they picked and set a string to print with our HTML
     if (userUnits == 'imperial'){
       userUnitSelection = ' F';
     } else if (userUnits =='metric'){
@@ -19,12 +20,12 @@ $(function(){
     }
 
     const query={
-      // zip: `${userInput},US`,
       apikey:apikey,
       cnt:userCnt,
       mode:'json',
       units:userUnits
     }
+    //switch statement to detect if user input was a number, if it was add .zip property, if not, add q property for city search. US = country code
     switch (userInput){
       case typeof userInput == 'number':
         query.zip =`${userInput},US`
@@ -37,7 +38,7 @@ $(function(){
   }
   function showData(data){
     let title = data.city.name;
-    let dataHTML = ``;
+    let dataHTML = '';
     console.log(data);
     let currentDate=dd;
     data.list.map(function(obj){
@@ -55,24 +56,10 @@ $(function(){
     event.preventDefault();
     let userInput = $('#search-box').val();
     let userCnt = $('#cntSelector').val();
-
-    getData(userInput, userCnt, showData);
+    let userUnits=$('#unitSelector').val();
+    //get all input values, pass into getData
+    getData(userInput, userCnt, userUnits, showData);
     console.log(today);
   })
 
-  // if (userUnits == 'imperial'){
-  //   let userUnitSelection = ' F';
-  // } else if (userUnits =='metric'){
-  //   let userUnitSelection = ' C';
-  // } else{
-  //   let userUnitSelection = ' K';
-  // }
-
-
-// getData(showData);
 })
-//object.list[0] = today
-//list[0].temp.day = today's day temp
-
-
-//obj.list.weather[0].description
