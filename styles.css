@@ -14,7 +14,8 @@
 
  }
  div {
- 	box-sizing: bordex-box;
+ 	box-sizing: border-box;
  	text-align: center;
+ 	justify-content: center;
 
  }
