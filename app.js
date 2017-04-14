@@ -13,28 +13,23 @@ const appState = {
 
 function resetState() {
   appState.cityObj = {};
-  appState.cnt='';
+  appState.query.cnt='';
   if (appState.query.lon){
     delete appState.query.lon;
     delete appState.query.lat;
   }if (appState.query.zip) {
     delete appState.query.zip;
   }
-    // appState = {
-    //         endpointURL: "http://api.openweathermap.org/data/2.5/forecast/daily",
-    //         cityObj: {},
-
-    //         query: {
-    //             apikey: `a7afa68d4dc2512e1d7bcdf7a20c5a73`,
-    //             cnt: '',
-    //             mode: 'json',
-    //             units: ''
-    //         }
-    //     }
-        // $('.js-container').empty();
-        // $('.js-titleContainer').empty();
 }
 
+//numerical input -if the text box has a number > 1 (so that we can run our if statement below and check for one type of invalid numerical in one step),
+// we assume it is a zip code, pass zip info into appState.query.zip, formating our query
+//char input - autocomplete listener - on three chars entered, query geobytes autocomplete API for 13 results. on click of item from the queried list,
+// run a new query for city-specific details API from geobytes. pass lat/lon into appState.cityObj, to be formatted in getData
+//on Submit -> pass user input variables into getData, parse input, run some logic to finalize query, query openweather API for results, display results
+//-------since the openweather API and the geobytes APi sometimes identify the same lat/lon as different places, if we auto complete, we pull the name 
+//-------from geobytes,
+//--------if zip, we pull name from openweather object.
 //$(document).ready(function)
 $(function() {
     //getting our date, setting an empty string fo rglobal scope on userUnitSelection
@@ -45,29 +40,21 @@ $(function() {
 
     function getData(userInput, userCnt, userUnits, callback) {
         //check what units they picked and set a string to print with our HTML
-        if (userUnits == 'imperial') {
+        if (appState.query.units == 'imperial') {
             userUnitSelection = ' F';
-        } else if (userUnits == 'metric') {
+        } else if (appState.query.units == 'metric') {
             userUnitSelection = ' C';
-        } else {
+        } else{
             userUnitSelection = ' K';
         }
         console.log(typeof userInput);
         if  (parseInt(userInput) > 1){
           appState.query.zip = `${userInput},US`
         } else{
-       appState.query.lon = `${appState.cityObj.geobyteslongitude}`
-       appState.query.lat = `${appState.cityObj.geobyteslatitude}`
+          appState.query.lon = `${appState.cityObj.geobyteslongitude}`
+          appState.query.lat = `${appState.cityObj.geobyteslatitude}`
         }
-        // switch (typeof userInput) {
-        //     case 'number':
-        //         appState.query.zip = `${userInput},US`
-        //         break;
-        //     case 'string':
-        //         appState.query.lon = `${appState.cityObj.geobyteslongitude}`
-        //         appState.query.lat = `${appState.cityObj.geobyteslatitude}`
-        //         break;
-                $.getJSON(appState.endpointURL, appState.query, callback);
+            $.getJSON(appState.endpointURL, appState.query, callback);
 
         }
      // get JSON works because it calls 'callback' which is passed into getData as showData(line 61).
@@ -100,10 +87,10 @@ $('.search-form').submit(function(event) {
     $('.js-titleContainer').empty();
     event.preventDefault();
     appState.userInput = $('#search-box').val();
-    appState.userCnt = $('#cntSelector').val();
-    appState.userUnits = $('#unitSelector').val();
+    appState.query.cnt = $('#cntSelector').val();
+    appState.query.units = $('#unitSelector').val();
     //get all input values, pass into getData
-    getData(appState.userInput, appState.userCnt, appState.userUnits, showData);
+    getData(appState.userInput, appState.query.cnt, appState.query.units, showData);
     console.log(today);
 })
 //Search box auto complete function complete with API query and return to box

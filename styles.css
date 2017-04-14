@@ -7,15 +7,24 @@
 .ui-autocomplete-loading { 
  }
 
- ul{
+ ul {
  	box-sizing: border-box;
  	border-style: 1px solid black;
- 	text-align:center;
+ }
+ li {
 
  }
+
  div {
+ 	display:block;
+ 	width:800px;
  	box-sizing: border-box;
  	text-align: center;
- 	justify-content: center;
+ 	border-style:1px solid black;
+ 	align-items: center;
 
  }
+
+ * {
+
+ }	
