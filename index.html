@@ -4,10 +4,13 @@
     <meta charset="utf-8">
     <title>weather forcast</title>
     <link rel="stylesheet" href="styles.css">
- <script
+<!--  <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/flick/jquery-ui.css" />
+      crossorigin="anonymous"></script>   
+ -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>        
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/flick/jquery-ui.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
 
@@ -30,7 +33,6 @@
       <option value="12">12</option>
       <option value="13">13</option>
       <option value="14">14</option>
-
     </select>
     <select name="units" id="unitSelector">
       <option value='imperial'>Choose Units</option>
@@ -40,9 +42,7 @@
     </select>
 
 
-    <form action="" method="post" name="form_citydetails" id="form_citydetails" enctype="multipart/form-data" onsubmit="return false;">
-
-    <p><b>Please enter</b> your city here to see it work.
+    <form action="" class = "search-form"  id="form_citydetails" enctype="multipart/form-data">
      <input class="ff_elem" type="text" name="ff_nm_from[]" value="" id="search-box"/>
         <button type="submit" name="button">Search</button>
       </form>
@@ -50,8 +50,6 @@
     </div>
     <div class = 'js-container'>
     </div>
-
-</form>
 
 
     <script src="app.js"></script>

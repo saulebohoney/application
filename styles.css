@@ -5,5 +5,16 @@
 	font-size:14px;
 	}
 .ui-autocomplete-loading { 
-	background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
+ }
+
+ ul{
+ 	box-sizing: border-box;
+ 	border-style: 1px solid black;
+ 	text-align:center;
+
+ }
+ div {
+ 	box-sizing: bordex-box;
+ 	text-align: center;
+
  }

@@ -1,5 +1,29 @@
-const apikey = 'a7afa68d4dc2512e1d7bcdf7a20c5a73';
-const endpointURL = "http://api.openweathermap.org/data/2.5/forecast/daily";
+const appState = {
+        endpointURL: "http://api.openweathermap.org/data/2.5/forecast/daily",
+        cityObj:{},
+    query : {
+       apikey:'a7afa68d4dc2512e1d7bcdf7a20c5a73',
+        cnt:'',
+        mode:'json',
+        units:''
+
+  //       lat:'',
+  //       lon:''
+  // }
+}}
+
+
+
+function resetappState(){
+  appState = {
+    query : {
+      apikey:`a7afa68d4dc2512e1d7bcdf7a20c5a73`,
+      cnt:'',
+      mode:'json',
+      units:''
+    }
+  }
+}
 
 //$(document).ready(function)
 $(function(){
@@ -19,22 +43,23 @@ $(function(){
       userUnitSelection = ' K';
     }
 
-    const query={
-      apikey:apikey,
-      cnt:userCnt,
-      mode:'json',
-      units:userUnits
-    }
+    // const query={
+    //   apikey:apikey,
+    //   cnt:userCnt,
+    //   mode:'json',
+    //   units:userUnits
+    // }
     //switch statement to detect if user input was a number, if it was add .zip property, if not, add q property for city search. US = country code
     switch (typeof userInput){
       case 'number':
-        query.zip =`${userInput},US`
+        appState.query.zip =`${userInput},US`
         break;
       default:
-        query.q=`${userInput},US`
+        appState.query.lon=`${appState.cityObj.geobyteslongitude}`
+        appState.query.lat=`${appState.cityObj.geobyteslatitude}`
         break;
     }
-    $.getJSON(endpointURL, query, callback);
+    $.getJSON(appState.endpointURL, appState.query, callback);
   } // get JSON works because it calls 'callback' which is passed into getData as showData(line 61).
   //when showData is called as the callback on $.getJSON (line 37), showData is called with the object we got from the API set to (data) in the function.
   //we can then manipulate the manipulate the object as 'data' in showData
@@ -56,32 +81,34 @@ $(function(){
     $('.js-container').empty();
     $('.js-titleContainer').empty();
     event.preventDefault();
-    let userInput = $('#search-box').val();
-    let userCnt = $('#cntSelector').val();
-    let userUnits=$('#unitSelector').val();
+    appState.userInput = $('#search-box').val();
+    appState.userCnt = $('#cntSelector').val();
+    appState.userUnits = $('#unitSelector').val();
     //get all input values, pass into getData
-    getData(userInput, userCnt, userUnits, showData);
+    getData(appState.userInput, appState.userCnt, appState.userUnits, showData);
     console.log(today);
   })
-
-    $(function () 
- {
+    //Search box auto complete function complete with API query and return to box
    $("#search-box").autocomplete({
     source: function (request, response) {
      $.getJSON(
       "http://gd.geobytes.com/AutoCompleteCity?callback=?&q="+request.term,
       function (data) {
        response(data);
+       console.log(data);
       }
      );
     },
     minLength: 3,
     select: function (event, ui) {
      var selectedObj = ui.item;
+     console.log(selectedObj);
      $("#search-box").val(selectedObj.value);
-    getcitydetails(selectedObj.value);
-     return false;
-    },
+     console.log(selectedObj.value);
+     getcitydetails(selectedObj.value);
+     console.log(appState.cityObj);
+
+         },
     open: function () {
      $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
     },
@@ -90,9 +117,22 @@ $(function(){
     }
    });
    $("#search-box").autocomplete("option", "delay", 100);
-  });
 
+function getcitydetails(fqcn) {
 
+  if (typeof fqcn == "undefined") fqcn = jQuery("#search-box").val();
 
+  cityfqcn = fqcn;
+
+  if (cityfqcn) {
+
+      jQuery.getJSON(
+                  "http://gd.geobytes.com/GetCityDetails?callback=?&fqcn="+cityfqcn,
+                     function (data) {
+              appState.cityObj = data;
+              }
+      );
+  }
+}
 
 })
