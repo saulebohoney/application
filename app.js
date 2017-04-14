@@ -8,9 +8,6 @@ const appState = {
         units: ''
     }
 }
-
-
-
 function resetState() {
   appState.cityObj = {};
   appState.query.cnt='';
