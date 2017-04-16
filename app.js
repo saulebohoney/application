@@ -37,9 +37,9 @@ $(function() {
 
   function getData(userInput, userCnt, userUnits, callback) {
         //check what units they picked and set a string to print with our HTML
-    if (appState.query.units == 'imperial') {
+    if (appState.query.units === 'imperial') {
       userUnitSelection = ' F';
-    } else if (appState.query.units == 'metric') {
+    } else if (appState.query.units === 'metric') {
       userUnitSelection = ' C';
     } else{
       userUnitSelection = ' K';
@@ -59,7 +59,7 @@ $(function() {
   function showData(data) {
     let x = $('#search-box').val();
     let title = '';
-    if (appState.cityObj.geobytesipaddress == x) {
+    if (appState.cityObj.geobytesipaddress === x) {
       title = $('#search-box').val();
     } else {
       title = data.city.name;
@@ -113,7 +113,7 @@ $(function() {
   $('#search-box').autocomplete('option', 'delay', 100);
 
   function getcitydetails(fqcn) {
-    if (typeof fqcn == 'undefined') fqcn = jQuery('#search-box').val();
+    if (typeof fqcn === 'undefined') fqcn = jQuery('#search-box').val();
     cityfqcn = fqcn;
     if (cityfqcn) {
       jQuery.getJSON(
